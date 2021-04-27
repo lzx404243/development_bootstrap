@@ -18,7 +18,7 @@ sudo echo "initialize sudo"
 branch_name=${1}; shift
 docker_image_name=${1}; shift
 
-repos=${HOME}/project_not_synced/repos
+repos=${HOME}/repos
 repo_name=ts_asf_master_${branch_name}
 ts_src=${repos}/${repo_name}
 
