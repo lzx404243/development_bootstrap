@@ -11,7 +11,7 @@ fail()
 
 repo_name=`basename $(pwd)`
 build_dir="${HOME}/build/${repo_name}"
-command="autoreconf -fi && ./configure --prefix ${build_dir} --enable-experimental-plugins --enable-example-plugins --prefix=/tmp/ats --enable-werror --enable-debug --enable-wccp --enable-luajit"
+command="autoreconf -fi && ./configure --prefix ${build_dir} --enable-experimental-plugins --enable-example-plugins --enable-werror --enable-debug --enable-wccp"
 dirname=$(dirname $(pwd))
 [ "${dirname}" = "${expected_dirname}" ] || fail "Expected to be in: ${expected_dirname}. Not running: ${command}"
 
@@ -31,6 +31,6 @@ then
   rm -rf ${build_dir}
 fi
 autoreconf -fi
-./configure --prefix ${build_dir} --enable-experimental-plugins --enable-example-plugins --prefix=/tmp/ats --enable-werror --enable-debug --enable-wccp --enable-luajit
+./configure --prefix ${build_dir} --enable-experimental-plugins --enable-example-plugins --enable-werror --enable-debug --enable-wccp
 make -j $(nproc)
 make install
