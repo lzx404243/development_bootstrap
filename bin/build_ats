@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+expected_dirname="${HOME}/repos"
+fail()
+{
+  echo $1
+  exit 1
+}
+
+repo_name=`basename $(pwd)`
+build_dir="${HOME}/build/${repo_name}"
+command="autoreconf -fi && ./configure --prefix ${build_dir} --enable-experimental-plugins --enable-example-plugins --prefix=/tmp/ats --enable-werror --enable-debug --enable-wccp --enable-luajit"
+dirname=$(dirname $(pwd))
+[ "${dirname}" = "${expected_dirname}" ] || fail "Expected to be in: ${expected_dirname}. Not running: ${command}"
+
+source /opt/rh/gcc-toolset-9/enable
+if [ -d "${build_dir}" ]
+then
+  while true; do
+    read -p "${build_dir} already exists. Clean it? (y/n) " yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) exit 0;;
+        * ) echo "Please answer y or n.";;
+    esac
+  done
+
+  make distclean
+  rm -rf ${build_dir}
+fi
+autoreconf -fi
+./configure --prefix ${build_dir} --enable-experimental-plugins --enable-example-plugins --prefix=/tmp/ats --enable-werror --enable-debug --enable-wccp --enable-luajit
+make -j $(nproc)
+make install
