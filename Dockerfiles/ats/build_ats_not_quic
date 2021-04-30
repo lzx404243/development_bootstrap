@@ -1,25 +1,23 @@
 #!/usr/bin/env bash
 
+# Build ATS using the system's openssl, not the /opt/openssl-quic one.
+
 set -e
 set -x
-expected_dirname="${HOME}/repos"
+expected_dirname="${HOME}/src"
 fail()
 {
   echo $1
   exit 1
 }
 
-openssl="/opt/openssl-quic"
-
 repo_name=`basename $(pwd)`
 build_dir="${HOME}/build/${repo_name}"
-command="autoreconf -fi && ./configure --prefix ${build_dir} --with-openssl=${openssl}--enable-experimental-plugins --enable-example-plugins --enable-werror --enable-debug --enable-wccp"
+command="autoreconf -fi && ./configure --prefix ${build_dir} --enable-example-plugins --enable-werror --enable-debug --enable-wccp"
 dirname=$(dirname $(pwd))
 [ "${dirname}" = "${expected_dirname}" ] || fail "Expected to be in: ${expected_dirname}. Not running: ${command}"
 
 source /opt/rh/gcc-toolset-9/enable
-# To make sure we get the quic-version of curl.
-export PATH=/opt/bin:${PATH}
 if [ -d "${build_dir}" ]
 then
   while true; do
@@ -35,6 +33,6 @@ then
   rm -rf ${build_dir}
 fi
 autoreconf -fi
-./configure --prefix ${build_dir} --with-openssl=${openssl} --enable-experimental-plugins --enable-example-plugins --enable-werror --enable-debug --enable-wccp
+./configure --prefix ${build_dir} --enable-experimental-plugins --enable-example-plugins --enable-werror --enable-debug --enable-wccp
 make -j $(nproc)
 make install

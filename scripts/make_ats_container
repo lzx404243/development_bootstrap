@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+usage="$(basename $0) <docker_image> <container_name>"
+
+fail()
+{
+  echo $1
+  exit 1
+}
+
+set -e
+
+sudo echo "initialize sudo"
+[ $? -eq 0 ] || fail "sudo initialization failed."
+
+[ -n "${HOME}" ] || fail "HOME is not set."
+[ $# -eq 2 ] || fail "Not enough parameters: ${usage}"
+docker_image=${1}; shift
+container_name=${1}; shift
+
+sudo docker run \
+  --name ${container_name} \
+  --init \
+  --cap-add=SYS_PTRACE \
+  --network=host \
+  -u ${USER} \
+  -d \
+  -t \
+  -v ${HOME}/.ssh:/home/${USER}/.ssh:rw \
+  ${docker_image}
+
+branch_name=${container_name}
+sudo docker exec -u ${USER} ${container_name} "start_ats_project ${branch_name}"
+
+echo
+echo "Enter the container with:"
+echo "sudo docker exec -u ${USER} ${container_name} /bin/bash"
+echo
+echo "tmux session name: ${branch_name}"

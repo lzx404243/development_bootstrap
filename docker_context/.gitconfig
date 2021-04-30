@@ -1,0 +1,36 @@
+[user]
+    email = brian.neradt@gmail.com
+    name = Brian Neradt
+
+[push]
+    default = simple
+
+[diff]
+    tool = default-difftool
+
+[difftool "default-difftool"]
+    cmd = vim -f '+next' '+execute \"DirDiff\" argv(0) argv(1)' $LOCAL $REMOTE '+syntax off'
+
+[color]
+    ui = auto
+
+[alias]
+    d = difftool -d
+    lg = log --decorate --graph
+    shw = show --decorate -s
+    ctags = !.git/hooks/ctags
+
+[init]
+    templatedir = ~/.git_template
+
+[merge]
+    conflictstyle = diff3
+
+[http]
+    sslVersion = tlsv1.2
+
+[checkout]
+    defaultRemote = origin
+
+[core]
+    editor = vim
