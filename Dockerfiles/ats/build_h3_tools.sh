@@ -29,6 +29,13 @@ CFLAGS=${CFLAGS:-"-O3 -g"}
 CXXFLAGS=${CXXFLAGS:-"-O3 -g"}
 LDFLAGS=${LDFLAGS:-"-Wl,-rpath=${OPENSSL}/lib"}
 
+if [ "$EUID" -ne 0 ]
+then
+  echo "Please run as root"
+  exit
+fi
+
+
 # OpenSSL needs special hackery ... Only grabbing the branch we need here... Bryan has shit for network.
 echo "Building OpenSSL with QUIC support"
 git clone -b OpenSSL_1_1_1g-quic-draft-32 --depth 1 https://github.com/tatsuhiro-t/openssl openssl-quic
@@ -36,7 +43,7 @@ cd openssl-quic
 git checkout 9f58e671
 ./config --prefix=${OPENSSL}
 ${MAKE} -j $(nproc)
-sudo ${MAKE} install
+${MAKE} install
 cd ..
 
 # Then nghttp3
@@ -47,7 +54,7 @@ git checkout 40943ca
 autoreconf -if
 ./configure --prefix=${BASE} PKG_CONFIG_PATH=${BASE}/lib/pkgconfig:${OPENSSL}/lib/pkgconfig CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}"
 ${MAKE} -j $(nproc)
-sudo ${MAKE} install
+${MAKE} install
 cd ..
 
 # Now ngtcp2
@@ -58,7 +65,7 @@ git checkout f183441a
 autoreconf -if
 ./configure --prefix=${BASE} PKG_CONFIG_PATH=${BASE}/lib/pkgconfig:${OPENSSL}/lib/pkgconfig CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}"
 ${MAKE} -j $(nproc)
-sudo ${MAKE} install
+${MAKE} install
 cd ..
 
 # Then nghttp2, with support for H3
@@ -69,7 +76,7 @@ git checkout d2e570c72
 autoreconf -if
 ./configure --prefix=${BASE} PKG_CONFIG_PATH=${BASE}/lib/pkgconfig:${OPENSSL}/lib/pkgconfig CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}"
 ${MAKE} -j $(nproc)
-sudo ${MAKE} install
+${MAKE} install
 cd ..
 
 # And finally curl
@@ -80,4 +87,4 @@ git checkout a3268eca7
 autoreconf -i
 ./configure --prefix=${BASE} --with-ssl=${OPENSSL} --with-nghttp2=${BASE} --with-nghttp3=${BASE} --with-ngtcp2=${BASE} CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}"
 ${MAKE} -j $(nproc)
-sudo ${MAKE} install
+${MAKE} install

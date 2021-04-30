@@ -10,8 +10,9 @@ fail()
 
 set -e
 
-sudo echo "initialize sudo"
-[ $? -eq 0 ] || fail "sudo initialization failed."
+# Verify early that we can run sudo.
+sudo true
+[ $? -eq 0 ] || fail "Running sudo failed."
 
 [ -n "${HOME}" ] || fail "HOME is not set."
 [ $# -eq 2 ] || fail "Not enough parameters: ${usage}"
@@ -23,17 +24,18 @@ sudo docker run \
   --init \
   --cap-add=SYS_PTRACE \
   --network=host \
-  -u ${USER} \
+  -u $(whoami) \
   -d \
   -t \
-  -v ${HOME}/.ssh:/home/${USER}/.ssh:rw \
+  -v ${HOME}/.ssh:/home/$(whoami)/.ssh:rw \
   ${docker_image}
 
 branch_name=${container_name}
-sudo docker exec -u ${USER} ${container_name} "start_ats_project ${branch_name}"
+sudo docker exec -u $(whoami) ${container_name} /home/$(whoami)/bin/start_ats_project ${branch_name}
 
 echo
 echo "Enter the container with:"
-echo "sudo docker exec -u ${USER} ${container_name} /bin/bash"
+echo "sudo docker exec -it -u $(whoami) ${container_name} /bin/bash"
 echo
-echo "tmux session name: ${branch_name}"
+echo "Enter the tmux session with:"
+echo "tmux attach -t ${branch_name}"

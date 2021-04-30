@@ -102,8 +102,5 @@ esac
 # Source the aliases file
 [ ${HOME}/.aliases ] && . ${HOME}/.aliases
 
-# Source our scripts for bash
-[ ${HOME}/.bash_scripts ] && . ${HOME}/.bash_scripts
-
 # Source the git completion file
 [ ${HOME}/.git-completion.bash ] && . ${HOME}/.git-completion.bash
