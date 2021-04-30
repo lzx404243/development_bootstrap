@@ -1,4 +1,4 @@
-" vim:softtabstop=4:shiftwidth=4:et
+" vim:softtabstop=2:shiftwidth=2:et
 " Tab preferences
 set shiftwidth=2
 set softtabstop=2
