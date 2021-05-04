@@ -17,8 +17,9 @@ git_username=$1; shift
 git_email=$1; shift
 
 parent_dir=$(dirname $0)
-ats_dockerfile_dir=${parent_dir}/../Dockerfiles/ats
-[ -d "${ats_dockerfile_dir}" ] || fail "Could not find ATS Dockerfile: ${ats_dockerfile_dir}"
+pv_dockerfile_dir=${parent_dir}/../Dockerfiles/proxy-verifier
+ubuntu_dockerfile_dir=${pv_dockerfile_dir}/ubuntu
+[ -d "${ubuntu_dockerfile_dir}" ] || fail "Could not find ATS Dockerfile: ${ubuntu_dockerfile_dir}"
 
 context_dir=${parent_dir}/../docker_context
 [ -d "${context_dir}" ] || fail "Could not find ATS context directory: ${context_dir}"
@@ -26,9 +27,10 @@ context_dir=${parent_dir}/../docker_context
 set -x
 set -e
 mkdir -p ${tmpdir}
-cp -rf ${ats_dockerfile_dir}/* ${tmpdir}
-cp -rf ${ats_dockerfile_dir}/.[^.]* ${tmpdir}
+cp -rf ${ubuntu_dockerfile_dir}/* ${tmpdir}
+cp -rf ${ubuntu_dockerfile_dir}/.[^.]* ${tmpdir}
 cp -rf ${context_dir}/.[^.]* ${tmpdir}
+cp ${pv_dockerfile_dir}/start_proxy_verifier_project ${tmpdir}
 
 cd $tmpdir
 sudo docker build \
