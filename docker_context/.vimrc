@@ -99,3 +99,5 @@ map ,iw :set diffopt+=iwhite<CR>
 " Associate some of au test extensions with Python.
 au BufRead,BufNewFile *.cli.ext set filetype=python
 au BufRead,BufNewFile *.test.ext set filetype=python
+au BufRead,BufNewFile *.part set filetype=python
+au BufRead,BufNewFile Sconstruct set filetype=python

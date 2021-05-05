@@ -22,8 +22,9 @@
 [merge]
     conflictstyle = diff3
 
-[http]
-    sslVersion = tlsv1.2
+# Hopefully this isn't needed anymore.
+#[http]
+#    sslVersion = tlsv1.2
 
 [checkout]
     defaultRemote = origin
