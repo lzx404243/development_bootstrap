@@ -30,7 +30,9 @@ mkdir -p ${tmpdir}
 cp -rf ${ubuntu_dockerfile_dir}/* ${tmpdir}
 cp -rf ${ubuntu_dockerfile_dir}/.[^.]* ${tmpdir}
 cp -rf ${context_dir}/.[^.]* ${tmpdir}
-cp ${pv_dockerfile_dir}/* ${tmpdir}
+# The following will complain about the ubuntu dir, but the directories should
+# nevertheless be copied.
+cp ${pv_dockerfile_dir}/* ${tmpdir} 2>/dev/null || true
 
 cd $tmpdir
 sudo docker build \
