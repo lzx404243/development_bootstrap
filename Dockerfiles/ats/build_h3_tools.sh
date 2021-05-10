@@ -38,12 +38,15 @@ fi
 
 # OpenSSL needs special hackery ... Only grabbing the branch we need here... Bryan has shit for network.
 echo "Building OpenSSL with QUIC support"
-git clone -b OpenSSL_1_1_1g-quic-draft-32 --depth 1 https://github.com/tatsuhiro-t/openssl openssl-quic
+openssl_branch=OpenSSL_1_1_1g-quic-draft-32
+explicit_prefix=${OPENSSL}-${openssl_branch}
+git clone -b ${openssl_branch} --depth 1 https://github.com/tatsuhiro-t/openssl openssl-quic
 cd openssl-quic
 git checkout 9f58e671
-./config --prefix=${OPENSSL}
+./config --prefix=${explicit_prefix}
 ${MAKE} -j $(nproc)
 ${MAKE} install
+ln -s ${explicit_prefix} ${OPENSSL}
 cd ..
 
 # Then nghttp3
