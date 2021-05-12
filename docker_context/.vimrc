@@ -101,3 +101,4 @@ au BufRead,BufNewFile *.cli.ext set filetype=python
 au BufRead,BufNewFile *.test.ext set filetype=python
 au BufRead,BufNewFile *.part set filetype=python
 au BufRead,BufNewFile Sconstruct set filetype=python
+au BufRead,BufNewFile Makefile.inc set filetype=automake
