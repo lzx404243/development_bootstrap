@@ -13,25 +13,33 @@ fail()
 branch_name=${1}; shift
 
 srcdir=${HOME}/src
-repo_name=proxy-verifier-${branch_name}
-ts_src=${srcdir}/${repo_name}
+repo_clone_name=proxy-verifier-${branch_name}
+ts_src=${srcdir}/${repo_clone_name}
 
 set -e
 set -x
 
 mkdir -p ${srcdir}
 cd ${srcdir}
-[ -d "${repo_name}" ] && fail "${srcdir}/${repo_name} already exists"
+[ -d "${repo_clone_name}" ] && fail "${srcdir}/${repo_clone_name} already exists"
 
 # Assume the user has a fork using their username.
-git clone git@github.com:$(whoami)/proxy-verifier.git $repo_name
-cd $repo_name
+my_repo_fork=git@github.com:$(whoami)/proxy-verifier.git
+git clone $my_repo_fork $repo_clone_name
+cd $repo_clone_name
 git remote add upstream git@github.com:yahoo/proxy-verifier.git
 git remote update
 git checkout master
 git pull upstream master
 git push origin master
-git checkout -b ${branch_name}
+if git ls-remote --exit-code --heads ${my_repo_fork} ${branch_name} > /dev/null
+then
+  # The branch exists. Check it out.
+  git checkout ${branch_name}
+else
+  # The branch does not exist yet. Create it.
+  git checkout -b ${branch_name}
+fi
 
 tmux new-session -s ${branch_name}   -n "src" -d "cd ${ts_src}; bash -i"
 tmux new-window  -t ${branch_name}:1 -n "build"  "cd ${ts_src}; bash -i"
