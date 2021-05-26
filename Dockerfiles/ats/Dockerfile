@@ -26,6 +26,7 @@ RUN mkdir -p bin
 
 COPY \
     /build_ats \
+    /build_ats_core \
     /build_ats_not_quic \
     /start_ats_project \
     /home/$username/bin/
