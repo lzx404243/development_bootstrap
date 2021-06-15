@@ -23,7 +23,7 @@ sudo docker run \
   --name ${container_name} \
   --init \
   --cap-add=SYS_PTRACE \
-  --network=host \
+  -p 8888:8888 \
   -u $(whoami) \
   -d \
   -t \

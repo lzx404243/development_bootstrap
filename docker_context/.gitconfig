@@ -31,3 +31,6 @@
 
 [core]
     editor = vim
+
+[pull]
+	ff = only
