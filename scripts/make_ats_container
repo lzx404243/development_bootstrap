@@ -19,11 +19,29 @@ sudo true
 docker_image=${1}; shift
 container_name=${1}; shift
 
+# Select a random free port.
+free_port=`netstat -aln | awk '
+  $6 == "LISTEN" {
+    if ($4 ~ "[.:][0-9]+$") {
+      split($4, a, /[:.]/);
+      port = a[length(a)];
+      p[port] = 1
+    }
+  }
+  END {
+    srand();
+    start = int(3000 + rand()*10000);
+    for (i = start; i < 65000 && p[i]; i++){};
+    if (i == 65000) {exit 1};
+    print i
+  }
+'`
+
 sudo docker run \
   --name ${container_name} \
   --init \
   --cap-add=SYS_PTRACE \
-  -p 8888:8888 \
+  -p ${free_port}:8888 \
   -u $(whoami) \
   -d \
   -t \

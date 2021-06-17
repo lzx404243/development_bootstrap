@@ -101,3 +101,5 @@ WORKDIR /home/$username
 RUN  \
   git config --global user.name "$git_username"; \
   git config --global user.email $git_email
+
+RUN echo "source /opt/rh/gcc-toolset-9/enable" >> /home/$username/.bashrc
