@@ -41,7 +41,7 @@ sudo docker run \
   --name ${container_name} \
   --init \
   --cap-add=SYS_PTRACE \
-  -p ${free_port}:8888 \
+  --network=host \
   -u $(whoami) \
   -d \
   -t \
