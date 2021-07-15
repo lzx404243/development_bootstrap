@@ -9,10 +9,7 @@ RUN yum install -y glibc-locale-source glibc-langpack-en
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 
 # User-specific specifications.
-RUN yum install -y sudo vim the_silver_searcher tmux man-pages
-
-# To build the docs.
-RUN yum install -y java
+RUN yum install -y vim the_silver_searcher tmux man-pages
 
 RUN useradd \
     --home-dir /home/$username \
