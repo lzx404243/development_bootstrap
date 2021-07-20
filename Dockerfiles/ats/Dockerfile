@@ -27,6 +27,7 @@ RUN mkdir -p bin
 COPY \
     /build_ats \
     /build_ats_core \
+    /build_ats_coverage \
     /build_ats_not_quic \
     /start_ats_project \
     /home/$username/bin/
@@ -38,6 +39,7 @@ RUN \
     chmod 755 /home/$username/bin/*
 
 COPY \
+    .agignore \
     .aliases \
     .bashrc \
     .editrc \
@@ -57,6 +59,7 @@ COPY .git_template .git_template
 
 RUN \
     sudo chown -R $username:nobody \
+        .agignore \
         .aliases \
         .bashrc \
         .editrc \
