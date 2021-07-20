@@ -30,6 +30,7 @@ COPY \
     /build_ats_coverage \
     /build_ats_not_quic \
     /start_ats_project \
+    /pretty_print_json \
     /home/$username/bin/
 
 # Alas, COPY is not run as USER, and older docker version do not have --chown
