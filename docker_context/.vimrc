@@ -5,29 +5,86 @@ set softtabstop=2
 set autoindent
 set expandtab
 
-" Make vim auto-wrap tripple slash comments.
-autocmd Filetype c,cpp set comments^=:///
-
-execute pathogen#infect()
-
 " Where to store swap files.  By default, they will go into ~/.vim/swap, but
 " if that doesn't work, they will go in cwd.
 set directory=~/.vim/swap,.
 
+" Make vim auto-wrap tripple slash comments.
+autocmd Filetype c,cpp set comments^=:///
+
+
+"------------------------------------------------------------------------------
+" Plugins
+"------------------------------------------------------------------------------
+
+call plug#begin('~/.vim/plugged')
+
+" For better file browsing, and git interaction.
+Plug 'preservim/nerdtree' | Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" Use gcc to comment out a line, gc in visual mode to comment out a block.
+Plug 'tpope/vim-commentary'
+
+" For fuzzy file searching.
+Plug 'junegunn/fzf.vim'
+
+" Python syntax highlighting.
+Plug 'vim-python/python-syntax'
+
+" Automatic PEP 8 compliance.
+Plug 'dense-analysis/ale'
+
+" Automatic quite and paren pairing.
+Plug 'jiangmiao/auto-pairs'
+
+" Highlight and fix whitespace issues.
+Plug 'git://github.com/ntpeters/vim-better-whitespace.git'
+
+" Supports 'git vimdiff', as well as being handy in its own right.
+Plug 'will133/vim-dirdiff'
+
+" vim/git integration.
+Plug 'tpope/vim-fugitive'
+
+" Must be kept last after all Plug commands.
+call plug#end()
+"------------------------------------------------------------------------------
+" End Plugins
+"------------------------------------------------------------------------------
+
+"------------------------------------------------------------------------------
+" Plugin Configuration
+"------------------------------------------------------------------------------
+
 filetype plugin indent on   " enables filetype indent specific plugins
 
-" syntastic settings
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-""let g:syntastic_always_populate_loc_list = 1
-""let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-"let g:syntastic_python_flake8_args = "--max-line-length=132"
+" --------
+" nerdtree
+" --------
 
-" ALE settings.
-let g:ale_python_flake8_options = '--builtins="Test,Condition,Testers,When,ExtendTest,CopyLogic,Any"'
+" Start NERDTree and put the cursor back in the other window.
+autocmd VimEnter * NERDTree | wincmd p
+
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" -------------
+" python-syntax
+" -------------
+
+let g:python_highlight_all = 1
+
+" ---
+" ALE
+" ---
+let g:ale_python_flake8_options = '--max-line-length 100 --builtins="Test,Condition,Testers,When,ExtendTest,CopyLogic,Any"'
+
+"------------------------------------------------------------------------------
+" End Plugin Configuration
+"------------------------------------------------------------------------------
 
 " Instructions on how to tab complete filenames.
 " set wildmode=longest,list,full
@@ -45,7 +102,6 @@ set scrolloff=3
 set modeline
 set modelines=5
 
-
 " Always show the status line.
 set laststatus=2
 
@@ -57,7 +113,6 @@ set tags^=.git/tags;~
 " Make Ctrl-] show the list of options by default.
 nnoremap <C-]> g<C-]>
 nnoremap <C-w>] <C-w>g]
-
 
 " Colors
 " Have syntax highlighting in terminals which can display colours:

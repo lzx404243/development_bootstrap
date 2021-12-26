@@ -49,6 +49,7 @@ COPY \
     .git-prompt.sh \
     .gitconfig \
     .inputrc \
+    .pylintrc \
     .tmux.conf \
     .vimrc \
     /home/$username/
@@ -70,6 +71,7 @@ RUN \
         .gitconfig \
         .git_template \
         .inputrc \
+        .pylintrc \
         .tmux.conf \
         .vim \
         .vimrc

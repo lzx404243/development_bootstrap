@@ -7,7 +7,10 @@ ARG git_email
 
 # User-specific specifications.
 RUN apt-get update; \
-    apt-get install -y git pipenv python3 sudo vim silversearcher-ag tmux exuberant-ctags
+    apt-get install -y git pipenv python3 sudo vim silversearcher-ag tmux \
+                       exuberant-ctags fzf curl
+
+RUN pip install --upgrade yapf autopep8 flake8 pylint
 
 RUN useradd \
     --home-dir /home/$username \
@@ -40,12 +43,12 @@ COPY \
     .git-prompt.sh \
     .gitconfig \
     .inputrc \
+    .pylintrc \
     .tmux.conf \
     .vimrc \
     /home/$username/
 
 RUN mkdir .vim
-COPY .vim .vim
 
 RUN mkdir .git_template
 COPY .git_template .git_template
@@ -60,34 +63,20 @@ RUN \
         .gitconfig \
         .git_template \
         .inputrc \
+        .pylintrc \
         .tmux.conf \
         .vim \
         .vimrc
 
 
+# Use vim-plug to retrieve and install plugins from the vimrc.
 WORKDIR .vim
-RUN mkdir bundle
-WORKDIR bundle
+RUN curl -fLo /home/$username/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-# Check these out at specific revisions so things do not
-# change across new docker builds.
-RUN \
-    git clone https://github.com/dense-analysis/ale.git; \
-    cd ale; \
-    git checkout d81986a1; \
-    cd ../; \
-    git clone git://github.com/ntpeters/vim-better-whitespace.git; \
-    cd vim-better-whitespace; \
-    git checkout 8cf4b21; \
-    cd ../; \
-    git clone git://github.com/will133/vim-dirdiff; \
-    cd vim-dirdiff; \
-    git checkout 0191693; \
-    cd ../; \
-    git clone https://github.com/tpope/vim-fugitive.git; \
-    cd vim-fugitive; \
-    git checkout 8f4a23e; \
-    cd ../
+# Install the vim plugins.
+# Unfortunately, no one seems to be able to get this to work non-interactively.
+# RUN vim -E -s +PlugInstall +visual +qall
 
 WORKDIR /home/$username
 RUN  \

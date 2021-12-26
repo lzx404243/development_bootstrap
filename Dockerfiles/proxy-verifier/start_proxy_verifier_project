@@ -24,7 +24,7 @@ cd ${srcdir}
 [ -d "${repo_clone_name}" ] && fail "${srcdir}/${repo_clone_name} already exists"
 
 # Assume the user has a fork using their username.
-my_repo_fork=git@github.com:$(whoami)/proxy-verifier.git
+my_repo_fork=git@github.com:bneradt/proxy-verifier.git
 git clone $my_repo_fork $repo_clone_name
 cd $repo_clone_name
 git remote add upstream git@github.com:yahoo/proxy-verifier.git
