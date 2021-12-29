@@ -20,7 +20,8 @@ RUN \
     cd proxy-verifier; \
     bash tools/build_library_dependencies.sh /opt
 
-RUN pip install --upgrade yapf autopep8 flake8 pylint
+# Python linting tools.
+RUN pip install --upgrade mypy yapf autopep8 flake8 pylint
 
 # User-specific specifications.
 RUN apt-get install -y sudo vim silversearcher-ag tmux exuberant-ctags
@@ -88,8 +89,9 @@ RUN curl -fLo /home/$username/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # Install the vim plugins.
-# Unfortunately, no one seems to be able to get this to work non-interactively.
-# RUN vim -E -s +PlugInstall +visual +qall
+RUN vim +'PlugInstall --sync' +qa
+WORKDIR /home/$username/.vim/plugged/YouCompleteMe
+RUN python3 install.py
 
 WORKDIR /home/$username
 RUN  \

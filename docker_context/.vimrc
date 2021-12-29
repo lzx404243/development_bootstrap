@@ -19,14 +19,34 @@ autocmd Filetype c,cpp set comments^=:///
 
 call plug#begin('~/.vim/plugged')
 
-" For better file browsing, and git interaction.
-Plug 'preservim/nerdtree' | Plug 'Xuyuanp/nerdtree-git-plugin'
+" For better file browsing.
+Plug 'preservim/nerdtree'
+
+" Supports 'git vimdiff', as well as being handy in its own right.
+Plug 'will133/vim-dirdiff'
+
+" There were display/windowing issues with this.
+" Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" vim/git integration.
+Plug 'tpope/vim-fugitive'
 
 " Use gcc to comment out a line, gc in visual mode to comment out a block.
 Plug 'tpope/vim-commentary'
 
+" Highlight and fix whitespace issues.
+Plug 'git://github.com/ntpeters/vim-better-whitespace.git'
+
 " For fuzzy file searching.
-Plug 'junegunn/fzf.vim'
+" Didn't seem worth the functionality it added. I couldn't get the navigation
+" in lists to work quite right, maybe because of bad interactions with other
+" plugins.
+" Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
+" Plug 'junegunn/fzf.vim'
+
+" --------------
+" Python Plugins
+" --------------
 
 " Python syntax highlighting.
 Plug 'vim-python/python-syntax'
@@ -34,17 +54,20 @@ Plug 'vim-python/python-syntax'
 " Automatic PEP 8 compliance.
 Plug 'dense-analysis/ale'
 
-" Automatic quite and paren pairing.
-Plug 'jiangmiao/auto-pairs'
+" Automatic quote, paren, and other character pairing.
+" On the net, I found the mistakes this introduced more annoying than
+" the help it provided.
+"Plug 'jiangmiao/auto-pairs'
 
-" Highlight and fix whitespace issues.
-Plug 'git://github.com/ntpeters/vim-better-whitespace.git'
+" Some Python IDE features such as refactoring.
+Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop'  }
 
-" Supports 'git vimdiff', as well as being handy in its own right.
-Plug 'will133/vim-dirdiff'
+" Automatic completion.
+Plug 'ycm-core/YouCompleteMe'
 
-" vim/git integration.
-Plug 'tpope/vim-fugitive'
+" Static type checking.
+" Commenting out because I think that Ale can handle this fine.
+"Plug 'integralist/vim-mypy'
 
 " Must be kept last after all Plug commands.
 call plug#end()
@@ -80,7 +103,22 @@ let g:python_highlight_all = 1
 " ---
 " ALE
 " ---
-let g:ale_python_flake8_options = '--max-line-length 100 --builtins="Test,Condition,Testers,When,ExtendTest,CopyLogic,Any"'
+let g:ale_python_flake8_options = '--max-line-length 79 --builtins="Test,Condition,Testers,When,ExtendTest,ExtendTestRun,CopyLogic,Any"'
+
+" -----------
+" python-mode
+" -----------
+let g:pymode_options_max_line_length = 79
+let g:pymode_rope = 1
+let g:pymode_lint_checkers = ['mypy', 'pyflakes', 'pep8', 'mccabe', 'pep257']
+
+" This resolves a conflict with YouCompleteMe.
+let g:pymode_rope_completion = 0
+
+" -------------
+" YouCompleteMe
+" -------------
+set encoding=utf-8
 
 "------------------------------------------------------------------------------
 " End Plugin Configuration

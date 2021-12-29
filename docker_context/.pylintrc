@@ -1,5 +1,5 @@
 [VARIABLES]
-additional-builtins=Test,Condition,Testers,When,ExtendTest,CopyLogic,Any
+additional-builtins=Test,Condition,Testers,When,ExtendTest,ExtendTestRun,CopyLogic,Any
 
 [FORMAT]
-max-line-length=100
+max-line-length=79

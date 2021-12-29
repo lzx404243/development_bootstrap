@@ -5,12 +5,17 @@ ARG userid
 ARG git_username
 ARG git_email
 
+# So that installing pkg-config does not interactively prompt during the image
+# creation process.
+ARG DEBIAN_FRONTEND=noninteractive
+
 # User-specific specifications.
 RUN apt-get update; \
     apt-get install -y git pipenv python3 sudo vim silversearcher-ag tmux \
-                       exuberant-ctags fzf curl
+                       cmake exuberant-ctags fzf curl
 
-RUN pip install --upgrade yapf autopep8 flake8 pylint
+# Python linting tools.
+RUN pip install --upgrade mypy yapf autopep8 flake8 pylint pydocstyle pycodestyle
 
 RUN useradd \
     --home-dir /home/$username \
@@ -70,13 +75,14 @@ RUN \
 
 
 # Use vim-plug to retrieve and install plugins from the vimrc.
-WORKDIR .vim
+WORKDIR /home/$username/.vim
 RUN curl -fLo /home/$username/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # Install the vim plugins.
-# Unfortunately, no one seems to be able to get this to work non-interactively.
-# RUN vim -E -s +PlugInstall +visual +qall
+RUN vim +'PlugInstall --sync' +qa
+WORKDIR /home/$username/.vim/plugged/YouCompleteMe
+RUN python3 install.py
 
 WORKDIR /home/$username
 RUN  \
