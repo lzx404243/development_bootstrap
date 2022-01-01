@@ -11,11 +11,14 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # User-specific specifications.
 RUN apt-get update; \
-    apt-get install -y git pipenv python3 sudo vim silversearcher-ag tmux \
+    apt-get install -y git pipenv python3 sudo neovim silversearcher-ag tmux \
                        cmake exuberant-ctags fzf curl
 
 # Python linting tools.
-RUN pip install --upgrade mypy yapf autopep8 flake8 pylint pydocstyle pycodestyle
+RUN pip install --upgrade pep257 mypy yapf autopep8 flake8 pylint pydocstyle pycodestyle
+
+# Install nodejs for coc-vim.
+RUN curl -o /tmp/lts -sL install-node.vercel.app/lts && bash /tmp/lts --yes
 
 RUN useradd \
     --home-dir /home/$username \
@@ -58,10 +61,14 @@ RUN mkdir .vim
 RUN mkdir .git_template
 COPY .git_template .git_template
 
+RUN mkdir -p .config/nvim
+COPY init.vim .config/nvim
+
 RUN \
     sudo chown -R $username:nogroup \
         .aliases \
         .bashrc \
+        .config/ \
         .editrc \
         .git-completion.bash \
         .git-prompt.sh \
@@ -75,16 +82,14 @@ RUN \
 
 
 # Use vim-plug to retrieve and install plugins from the vimrc.
-WORKDIR /home/$username/.vim
-RUN curl -fLo /home/$username/.vim/autoload/plug.vim --create-dirs \
+RUN \
+    curl -fLo .local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # Install the vim plugins.
-RUN vim +'PlugInstall --sync' +qa
-WORKDIR /home/$username/.vim/plugged/YouCompleteMe
-RUN python3 install.py
+RUN nvim +'PlugInstall --sync' +qa
+RUN nvim +'CocInstall -sync coc-pyright coc-json' +qall
 
-WORKDIR /home/$username
 RUN  \
   git config --global user.name "$git_username"; \
   git config --global user.email $git_email

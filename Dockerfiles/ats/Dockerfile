@@ -9,7 +9,13 @@ RUN yum install -y glibc-locale-source glibc-langpack-en
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 
 # User-specific specifications.
-RUN yum install -y vim the_silver_searcher tmux man-pages
+RUN yum install -y neovim the_silver_searcher tmux man-pages
+
+# Python linting tools.
+RUN pip install --upgrade pep257 mypy yapf autopep8 flake8 pylint pydocstyle pycodestyle
+
+# Install nodejs for coc-vim.
+RUN curl -o /tmp/lts -sL install-node.vercel.app/lts && bash /tmp/lts --yes
 
 RUN useradd \
     --home-dir /home/$username \
@@ -60,11 +66,15 @@ COPY .vim .vim
 RUN mkdir .git_template
 COPY .git_template .git_template
 
+RUN mkdir -p .config/nvim
+COPY init.vim .config/nvim
+
 RUN \
     sudo chown -R $username:nobody \
         .agignore \
         .aliases \
         .bashrc \
+        .config/ \
         .editrc \
         .git-completion.bash \
         .git-prompt.sh \
@@ -76,32 +86,15 @@ RUN \
         .vim \
         .vimrc
 
-
-WORKDIR .vim
-RUN mkdir bundle
-WORKDIR bundle
-
-# Check these out at specific revisions so things do not
-# change across new docker builds.
+# Use vim-plug to retrieve and install plugins from the vimrc.
 RUN \
-    git clone https://github.com/dense-analysis/ale.git; \
-    cd ale; \
-    git checkout d81986a1; \
-    cd ../; \
-    git clone git://github.com/ntpeters/vim-better-whitespace.git; \
-    cd vim-better-whitespace; \
-    git checkout 8cf4b21; \
-    cd ../; \
-    git clone git://github.com/will133/vim-dirdiff; \
-    cd vim-dirdiff; \
-    git checkout 0191693; \
-    cd ../; \
-    git clone https://github.com/tpope/vim-fugitive.git; \
-    cd vim-fugitive; \
-    git checkout 8f4a23e; \
-    cd ../
+    curl -fLo .local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-WORKDIR /home/$username
+# Install the vim plugins.
+RUN nvim +'PlugInstall --sync' +qa
+RUN nvim +'CocInstall -sync coc-pyright coc-json' +qall
+
 RUN  \
   git config --global user.name "$git_username"; \
   git config --global user.email $git_email

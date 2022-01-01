@@ -60,11 +60,15 @@ COPY .vim .vim
 RUN mkdir .git_template
 COPY .git_template .git_template
 
+RUN mkdir -p .config/nvim
+COPY init.vim .config/nvim
+
 RUN \
     sudo chown -R $username:nobody \
         .agignore \
         .aliases \
         .bashrc \
+        .config/ \
         .editrc \
         .git-completion.bash \
         .git-prompt.sh \

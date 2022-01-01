@@ -21,10 +21,13 @@ RUN \
     bash tools/build_library_dependencies.sh /opt
 
 # Python linting tools.
-RUN pip install --upgrade mypy yapf autopep8 flake8 pylint
+RUN pip install --upgrade pep257 mypy yapf autopep8 flake8 pylint pydocstyle pycodestyle
 
 # User-specific specifications.
-RUN apt-get install -y sudo vim silversearcher-ag tmux exuberant-ctags
+RUN apt-get install -y sudo neovim silversearcher-ag tmux exuberant-ctags
+
+# Install nodejs for coc-vim.
+RUN curl -o /tmp/lts -sL install-node.vercel.app/lts && bash /tmp/lts --yes
 
 RUN useradd \
     --home-dir /home/$username \
@@ -68,10 +71,14 @@ RUN mkdir .vim
 RUN mkdir .git_template
 COPY .git_template .git_template
 
+RUN mkdir -p .config/nvim
+COPY init.vim .config/nvim
+
 RUN \
     sudo chown -R $username:nogroup \
         .aliases \
         .bashrc \
+        .config/ \
         .editrc \
         .git-completion.bash \
         .git-prompt.sh \
@@ -84,16 +91,16 @@ RUN \
         .vimrc
 
 
-WORKDIR .vim
-RUN curl -fLo /home/$username/.vim/autoload/plug.vim --create-dirs \
+# Use vim-plug to retrieve and install plugins from the vimrc.
+RUN \
+    curl -fLo .local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # Install the vim plugins.
-RUN vim +'PlugInstall --sync' +qa
-WORKDIR /home/$username/.vim/plugged/YouCompleteMe
-RUN python3 install.py
+RUN nvim +'PlugInstall --sync' +qa
+RUN nvim +'CocInstall --sync coc-pyright' +qa
+RUN nvim +'CocInstall --sync coc-json' +qa
 
-WORKDIR /home/$username
 RUN  \
   git config --global user.name "$git_username"; \
   git config --global user.email $git_email

@@ -27,6 +27,7 @@ set -x
 set -e
 mkdir -p ${tmpdir}
 cp -rf ${context_dir}/.[^.]* ${tmpdir}
+cp -rf ${context_dir}/* ${tmpdir}
 cp -rf ${context_dir}/ubuntu/.[^.]* ${tmpdir}
 cp -rf ${docker_file_dir}/* ${tmpdir}
 # The '|| true' is in case we put something in there someday.
