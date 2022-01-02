@@ -29,7 +29,7 @@ then
     esac
   done
 
-  make distclean
+  git clean -d -x -f -q
   rm -rf ${build_dir}
 fi
 autoreconf -fi

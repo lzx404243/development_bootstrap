@@ -31,7 +31,7 @@ source /opt/rh/gcc-toolset-9/enable
 export PATH=/opt/bin:${PATH}
 if [ -d "${build_dir}" ]
 then
-  git cln
+  git clean -d -x -f -q
   rm -rf ${build_dir}
 fi
 

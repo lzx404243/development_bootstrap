@@ -80,7 +80,6 @@ RUN \
         .vim \
         .vimrc
 
-
 # Use vim-plug to retrieve and install plugins from the vimrc.
 RUN \
     curl -fLo .local/share/nvim/site/autoload/plug.vim --create-dirs \

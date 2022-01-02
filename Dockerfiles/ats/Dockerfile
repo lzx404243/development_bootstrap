@@ -9,7 +9,26 @@ RUN yum install -y glibc-locale-source glibc-langpack-en
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 
 # User-specific specifications.
-RUN yum install -y neovim the_silver_searcher tmux man-pages
+RUN yum install -y the_silver_searcher tmux man-pages cmake
+
+# The packaged version of neovim is old. Install a recent one.  This would be
+# easier if fuse worked better in a docker build, but there doesn't seem to be
+# an easy way to grant privileged access to a docker build run. So we have to
+# do things by hand.
+RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage; \
+    chmod u+x nvim.appimage; \
+    ./nvim.appimage --appimage-extract; \
+    cd squashfs-root/usr; \
+    tar cf - . | tar xf - -C /usr
+
+# Install Bear. This takes a while, but I had trouble using an rpm.
+RUN yum install -y json-devel spdlog-devel fmt-devel
+RUN git clone https://github.com/rizsotto/Bear.git; \
+    cd Bear/; \
+    source /opt/rh/gcc-toolset-9/enable; \
+    cmake -DENABLE_UNIT_TESTS=OFF -DENABLE_FUNC_TESTS=OFF $BEAR_SOURCE_DIR; \
+    make -j4 all; \
+    make install
 
 # Python linting tools.
 RUN pip install --upgrade pep257 mypy yapf autopep8 flake8 pylint pydocstyle pycodestyle
@@ -36,6 +55,7 @@ COPY \
     /build_ats_core \
     /build_ats_coverage \
     /build_ats_not_quic \
+    /run_bear \
     /start_ats_project \
     /pretty_print_json \
     /home/$username/bin/
@@ -93,7 +113,7 @@ RUN \
 
 # Install the vim plugins.
 RUN nvim +'PlugInstall --sync' +qa
-RUN nvim +'CocInstall -sync coc-pyright coc-json' +qall
+RUN nvim +'CocInstall -sync coc-clangd coc-pyright coc-json' +qall
 
 RUN  \
   git config --global user.name "$git_username"; \
