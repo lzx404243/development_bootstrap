@@ -11,7 +11,19 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Packages for building Proxy Verifier and its dependencies.
 RUN apt-get update; \
-    apt-get install -y pipenv autoconf libtool pkg-config git curl
+    apt-get install -y pipenv autoconf libtool pkg-config git curl clangd
+
+# Install Bear to generate compile_commands.json for clangd autocompletion.
+# This takes a while, but the packaged Ubuntu version installed via apt-get is
+# 2.x and we need the newer 3.x.
+RUN apt-get install -y cmake pkg-config libfmt-dev libspdlog-dev \
+                       nlohmann-json3-dev libgrpc++-dev \
+                       protobuf-compiler-grpc libssl-dev
+RUN git clone https://github.com/rizsotto/Bear.git; \
+    cd Bear/; \
+    cmake -DENABLE_UNIT_TESTS=OFF -DENABLE_FUNC_TESTS=OFF; \
+    make -j4 all; \
+    make install
 
 # Install the library dependencies in /opt.
 WORKDIR /var/tmp
@@ -90,7 +102,6 @@ RUN \
         .vim \
         .vimrc
 
-
 # Use vim-plug to retrieve and install plugins from the vimrc.
 RUN \
     curl -fLo .local/share/nvim/site/autoload/plug.vim --create-dirs \
@@ -98,8 +109,7 @@ RUN \
 
 # Install the vim plugins.
 RUN nvim +'PlugInstall --sync' +qa
-RUN nvim +'CocInstall --sync coc-pyright' +qa
-RUN nvim +'CocInstall --sync coc-json' +qa
+RUN nvim +'CocInstall -sync coc-clangd coc-pyright coc-json' +qall
 
 RUN  \
   git config --global user.name "$git_username"; \
