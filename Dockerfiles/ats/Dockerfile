@@ -26,7 +26,7 @@ RUN yum install -y json-devel spdlog-devel fmt-devel
 RUN git clone https://github.com/rizsotto/Bear.git; \
     cd Bear/; \
     source /opt/rh/gcc-toolset-9/enable; \
-    cmake -DENABLE_UNIT_TESTS=OFF -DENABLE_FUNC_TESTS=OFF $BEAR_SOURCE_DIR; \
+    cmake -DENABLE_UNIT_TESTS=OFF -DENABLE_FUNC_TESTS=OFF; \
     make -j4 all; \
     make install
 
