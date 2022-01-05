@@ -36,12 +36,18 @@ Plug 'tpope/vim-commentary'
 " Highlight and fix whitespace issues.
 Plug 'git://github.com/ntpeters/vim-better-whitespace.git'
 
+" A better status line.
+Plug 'liuchengxu/eleline.vim'
+
 " For fuzzy file searching.
 " REMOVED: Didn't seem worth the functionality it added. I couldn't get the
 " navigation in lists to work quite right, maybe because of bad interactions
 " with other plugins.
 " Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 " Plug 'junegunn/fzf.vim'
+
+" Automatic completion.
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " --------------
 " Python Plugins
@@ -60,9 +66,6 @@ Plug 'dense-analysis/ale'
 
 " Some Python IDE features such as refactoring.
 Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop'  }
-
-" Automatic completion.
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Static type checking.
 " REMOVED: I think that Ale and python-mode handle this fine.
