@@ -57,6 +57,7 @@ RUN mkdir -p bin
 COPY \
     /start_proxy_verifier_project \
     /gh-md-toc \
+    /build_static \
     /home/$username/bin/
 
 # Alas, COPY is not run as USER, and older docker version do not have --chown
