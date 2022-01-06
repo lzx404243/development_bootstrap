@@ -87,7 +87,7 @@ RUN \
 
 # Install the vim plugins.
 RUN nvim +'PlugInstall --sync' +qa
-RUN nvim +'CocInstall -sync coc-pyright coc-json' +qall
+RUN nvim +'CocInstall -sync coc-pyright coc-json coc-sh' +qall
 
 RUN  \
   git config --global user.name "$git_username"; \
