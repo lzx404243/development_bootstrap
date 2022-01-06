@@ -5,7 +5,7 @@
     tool = default-difftool
 
 [difftool "default-difftool"]
-    cmd = vim -f '+next' '+execute \"DirDiff\" argv(0) argv(1)' $LOCAL $REMOTE '+syntax off'
+    cmd = nvim -f '+next' '+execute \"DirDiff\" argv(0) argv(1)' $LOCAL $REMOTE '+syntax off'
 
 [color]
     ui = auto
@@ -19,9 +19,11 @@
 
 [init]
     templatedir = ~/.git_template
+    defaultBranch = main
 
 [merge]
     conflictstyle = diff3
+    tool = nvimdiff
 
 # Hopefully this isn't needed anymore.
 #[http]
@@ -31,7 +33,10 @@
     defaultRemote = origin
 
 [core]
-    editor = vim
+    editor = nvim
 
 [pull]
-	ff = only
+    ff = only
+
+[help]
+    autocorrect = prompt
