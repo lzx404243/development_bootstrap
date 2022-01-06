@@ -304,7 +304,8 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 " To change the error coc popups to be readable.
-highlight CocErrorFloat ctermfg=Black
+highlight CocFloating ctermfg=Black ctermbg=DarkYellow
+highlight CocErrorFloat ctermfg=Black ctermbg=DarkYellow
 
 "------------------------------------------------------------------------------
 " End Plugin Configuration
