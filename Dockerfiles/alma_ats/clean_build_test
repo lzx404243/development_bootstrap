@@ -41,7 +41,7 @@ tmp_build_out=${tmp_dir}/build.txt
 mkdir -p ${tmp_dir}
 autoreconf -fi > ${tmp_build_out} 2>&1
 ./configure --prefix ${build_dir} --with-openssl=${openssl} --enable-experimental-plugins --enable-example-plugins --enable-werror --enable-debug --enable-wccp > ${tmp_build_out} 2>&1
-make -j $(nproc) > ${tmp_build_out} 2>&1
+bear -- make -j $(nproc) > ${tmp_build_out} 2>&1
 make install > ${tmp_build_out} 2>&1
 
 cd ${test_dir}

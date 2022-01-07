@@ -34,5 +34,5 @@ then
 fi
 autoreconf -fi
 ./configure --prefix ${build_dir} --enable-experimental-plugins --enable-example-plugins --enable-werror --enable-debug --enable-wccp
-make -j $(nproc)
+bear -- make -j $(nproc)
 make install

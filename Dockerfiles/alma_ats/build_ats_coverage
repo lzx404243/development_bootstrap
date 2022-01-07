@@ -47,7 +47,7 @@ lcov --directory . --no-external --capture --initial --output-file /tmp/lcov_tra
 #
 autoreconf -fi
 ./configure --prefix ${build_dir} --with-openssl=${openssl} --enable-experimental-plugins --enable-example-plugins --enable-werror --enable-debug --enable-wccp --enable-coverage
-make -j $(nproc)
+bear -- make -j $(nproc)
 make install
 
 #
