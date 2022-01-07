@@ -55,7 +55,6 @@ COPY \
     /build_ats_core \
     /build_ats_coverage \
     /build_ats_not_quic \
-    /run_bear \
     /start_ats_project \
     /pretty_print_json \
     /home/$username/bin/
@@ -114,6 +113,9 @@ RUN \
 # Install the vim plugins.
 RUN nvim +'PlugInstall --sync' +qa
 RUN nvim +'CocInstall -sync coc-clangd coc-pyright coc-json coc-sh' +qall
+
+# Install the latest version of clang.
+RUN sudo dnf install clang
 
 RUN  \
   git config --global user.name "$git_username"; \
