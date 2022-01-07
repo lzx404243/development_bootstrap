@@ -115,7 +115,9 @@ RUN nvim +'PlugInstall --sync' +qa
 RUN nvim +'CocInstall -sync coc-clangd coc-pyright coc-json coc-sh' +qall
 
 # Install the latest version of clang.
-RUN sudo dnf install clang
+RUN \
+  sudo dnf clean metadata; \
+  sudo dnf install -y clang
 
 RUN  \
   git config --global user.name "$git_username"; \
