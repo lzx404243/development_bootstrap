@@ -37,7 +37,11 @@ Plug 'tpope/vim-commentary'
 Plug 'git://github.com/ntpeters/vim-better-whitespace.git'
 
 " A better status line.
-Plug 'liuchengxu/eleline.vim'
+" Might as well use airline since it is more common.
+"Plug 'liuchengxu/eleline.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
 
 " For fuzzy file searching.
 " REMOVED: Didn't seem worth the functionality it added. I couldn't get the
