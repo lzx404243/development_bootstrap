@@ -16,6 +16,7 @@ alias l='ls -CF'
 
 alias vim='nvim'
 alias vimdiff='nvim -d'
+alias view='nvim -R'
 
 alias gentags='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q+f'
 alias genptags='ctags -R --python-kinds=-i'
