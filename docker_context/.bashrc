@@ -13,7 +13,7 @@ done
 
 GDBHISTFILE=${HOME}/.gdbhistory
 
-EDITOR=vim
+EDITOR=nvim
 
 # Make the command line act like vi.
 set -o vi
