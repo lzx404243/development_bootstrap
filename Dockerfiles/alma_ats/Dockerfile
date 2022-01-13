@@ -54,7 +54,7 @@ COPY \
     .vimrc \
     /home/$username/
 
-RUN mkdir .vim
+RUN mkdir -p .vim/swap
 COPY .vim .vim
 
 RUN mkdir .git_template

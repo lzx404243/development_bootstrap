@@ -66,7 +66,7 @@ COPY \
     .vimrc \
     /home/$username/
 
-RUN mkdir .vim
+RUN mkdir -p .vim/swap
 
 RUN mkdir .git_template
 COPY .git_template .git_template
