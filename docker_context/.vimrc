@@ -42,13 +42,15 @@ Plug 'git://github.com/ntpeters/vim-better-whitespace.git'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-
 " For fuzzy file searching.
  Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
  Plug 'junegunn/fzf.vim'
 
 " Automatic completion.
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Easy navigation.
+Plug 'ggandor/lightspeed.nvim'
 
 " --------------
 " Python Plugins
