@@ -44,11 +44,8 @@ Plug 'vim-airline/vim-airline-themes'
 
 
 " For fuzzy file searching.
-" REMOVED: Didn't seem worth the functionality it added. I couldn't get the
-" navigation in lists to work quite right, maybe because of bad interactions
-" with other plugins.
-" Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
-" Plug 'junegunn/fzf.vim'
+ Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
+ Plug 'junegunn/fzf.vim'
 
 " Automatic completion.
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -133,6 +130,12 @@ let g:pymode_rope_completion = 0
 " -------------
 " Comment this out since the plugin is replaced with coc-vim.
 "set encoding=utf-8
+
+" ---
+" fzf
+" ---
+nnoremap <silent> <leader>z :Files<CR>
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 
 " -------------
 " coc
