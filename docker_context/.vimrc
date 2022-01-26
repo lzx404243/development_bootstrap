@@ -136,8 +136,9 @@ let g:pymode_rope_completion = 0
 " ---
 " fzf
 " ---
-nnoremap <silent> <leader>z :Files<CR>
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
+nnoremap <silent> <leader>z :Files<CR>
+nnoremap <silent> <leader>g :Ag<CR>
 
 " -------------
 " coc
