@@ -215,6 +215,10 @@ nmap <silent> gu <Plug>(coc-references-used)
 " clangd-13 does not support the following coc-type-definition. Use gd.
 nmap <silent> gy <Plug>(coc-type-definition)
 
+" Mappings to switch between header and cc c++ files.
+nmap <silent> gs :CocCommand clangd.switchSourceHeader<CR>
+nmap <silent> gS :vsp<CR>:CocCommand clangd.switchSourceHeader<CR>
+
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
