@@ -5,6 +5,12 @@ ARG userid
 ARG git_username
 ARG git_email
 
+# Update the mirrors now that Centos 8 packages are no longer in the official
+# mirrors.
+RUN \
+  sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Linux-*; \
+  sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Linux-*
+
 RUN yum install -y glibc-locale-source glibc-langpack-en
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 
@@ -27,7 +33,7 @@ RUN git clone https://github.com/rizsotto/Bear.git; \
     cd Bear/; \
     source /opt/rh/gcc-toolset-9/enable; \
     cmake -DENABLE_UNIT_TESTS=OFF -DENABLE_FUNC_TESTS=OFF; \
-    make -j4 all; \
+    make -j `nproc` all; \
     make install
 
 # Python linting tools.
@@ -125,3 +131,20 @@ RUN  \
   git config --global user.email $git_email
 
 RUN echo "source /opt/rh/gcc-toolset-9/enable" >> /home/$username/.bashrc
+
+# Update git to a more recent version. This, among probably other advantages,
+# supports nvimdiff.
+RUN \
+  sudo yum install -y asciidoc xmlto libcurl-devel; \
+  mkdir -p /home/${username}/src; \
+  cd /home/${username}/src; \
+  git clone https://github.com/git/git.git; \
+  cd git/; \
+  git checkout v2.34.1; \
+  make configure; \
+  ./configure --prefix=/usr/local; \
+  make -j `nproc` all doc; \
+  sudo yum -y remove git; \
+  sudo yum -y remove 'git-*'; \
+  sudo make install install-doc install-html; \
+  cp contrib/completion/git-completion.bash /home/${username}/.git-completion.bash
