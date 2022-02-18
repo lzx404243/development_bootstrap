@@ -49,9 +49,6 @@ Plug 'vim-airline/vim-airline-themes'
 " Automatic completion.
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" Easy navigation.
-Plug 'ggandor/lightspeed.nvim'
-
 " --------------
 " Python Plugins
 " --------------

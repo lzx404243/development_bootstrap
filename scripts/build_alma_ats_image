@@ -29,7 +29,7 @@ mkdir -p ${tmpdir}
 cp -rf ${ats_dockerfile_dir}/* ${tmpdir}
 cp -rf ${ats_dockerfile_dir}/.[^.]* ${tmpdir}
 cp -rf ${context_dir}/.[^.]* ${tmpdir}
-cp -rf ${context_dir}/centos/.[^.]* ${tmpdir}
+cp -rf ${context_dir}/rockylinux/.[^.]* ${tmpdir}
 
 cd $tmpdir
 sudo docker build \

@@ -1,15 +1,9 @@
-FROM controller.trafficserver.org/ats/centos:8
+FROM controller.trafficserver.org/ats/rockylinux:8
 
 ARG username
 ARG userid
 ARG git_username
 ARG git_email
-
-# Update the mirrors now that Centos 8 packages are no longer in the official
-# mirrors.
-RUN \
-  sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Linux-*; \
-  sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Linux-*
 
 RUN yum install -y glibc-locale-source glibc-langpack-en
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
