@@ -25,7 +25,7 @@ RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
 RUN yum install -y json-devel spdlog-devel fmt-devel
 RUN git clone https://github.com/rizsotto/Bear.git; \
     cd Bear/; \
-    source /opt/rh/gcc-toolset-9/enable; \
+    source /opt/rh/gcc-toolset-11/enable; \
     cmake -DENABLE_UNIT_TESTS=OFF -DENABLE_FUNC_TESTS=OFF; \
     make -j `nproc` all; \
     make install
@@ -124,7 +124,7 @@ RUN  \
   git config --global user.name "$git_username"; \
   git config --global user.email $git_email
 
-RUN echo "source /opt/rh/gcc-toolset-9/enable" >> /home/$username/.bashrc
+RUN echo "source /opt/rh/gcc-toolset-11/enable" >> /home/$username/.bashrc
 
 # Update git to a more recent version. This, among probably other advantages,
 # supports nvimdiff.
