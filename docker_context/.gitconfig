@@ -15,7 +15,7 @@
     lg = log --decorate --graph
     shw = show --decorate -s
     ctags = !.git/hooks/ctags
-    cln = clean -d -x -f -q
+    cln = clean -d -x -f -f -q
 
 [init]
     templatedir = ~/.git_template
