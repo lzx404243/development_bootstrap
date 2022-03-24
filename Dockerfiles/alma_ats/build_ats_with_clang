@@ -40,7 +40,7 @@ then
     esac
   done
 
-  git clean -d -x -f -q
+  git clean -d -x -f -f -q
   rm -rf ${build_dir}
 fi
 autoreconf -fi
