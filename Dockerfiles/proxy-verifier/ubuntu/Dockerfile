@@ -119,8 +119,8 @@ RUN \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # Install the vim plugins.
-RUN nvim +'PlugInstall --sync' +qa
-RUN nvim +'CocInstall -sync coc-clangd coc-pyright coc-json coc-sh' +qall
+RUN nvim +'--headless PlugInstall --sync' +qa
+RUN nvim +'--headless CocInstall -sync coc-clangd coc-pyright coc-json coc-sh' +qall
 
 RUN  \
   git config --global user.name "$git_username"; \
