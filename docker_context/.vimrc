@@ -34,7 +34,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 
 " Highlight and fix whitespace issues.
-Plug 'git://github.com/ntpeters/vim-better-whitespace.git'
+Plug 'ntpeters/vim-better-whitespace'
 
 " A better status line.
 " Might as well use airline since it is more common.
@@ -82,6 +82,11 @@ call plug#end()
 "------------------------------------------------------------------------------
 
 filetype plugin indent on   " enables filetype indent specific plugins
+
+" -------
+" vimdiff
+" -------
+set diffopt+=iwhite
 
 " --------
 " nerdtree
