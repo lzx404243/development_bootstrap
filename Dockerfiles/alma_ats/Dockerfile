@@ -63,6 +63,7 @@ COPY .git_template .git_template
 
 RUN mkdir -p .config/nvim
 COPY init.vim .config/nvim
+COPY coc-settings.json .config/nvim
 
 RUN \
     sudo chown -R $username:nobody \
