@@ -27,7 +27,7 @@ sudo docker run \
   -u $(whoami) \
   -d \
   -t \
-  -v ${HOME}/.ssh:/home/$(whoami)/.ssh:rw \
+  -v ${HOME}/.ssh:/home/$(whoami)/.ssh:Z \
   ${docker_image}
 
 branch_name=${container_name}
