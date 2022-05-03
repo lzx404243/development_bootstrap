@@ -1,4 +1,4 @@
-FROM controller.trafficserver.org/ats/almalinux:8
+FROM ci.trafficserver.apache.org/ats/almalinux:8
 
 ARG username
 ARG userid

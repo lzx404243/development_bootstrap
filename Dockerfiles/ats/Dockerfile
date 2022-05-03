@@ -1,4 +1,4 @@
-FROM controller.trafficserver.org/ats/rockylinux:8
+FROM ci.trafficserver.apache.org/ats/rockylinux:8
 
 ARG username
 ARG userid
