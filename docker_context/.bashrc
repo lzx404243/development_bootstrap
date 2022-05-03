@@ -83,7 +83,7 @@ if [ "$color_prompt" = yes ]; then
     PURPLE="\e[0;35m"
     DEFAULT_TERM_COLOR="\e[0m"
 
-    if [ -f "/.dockerenv" ]; then
+    if [ -f "/.dockerenv" -o -f "/run/.containerenv" ]; then
         PS1="${BLUE}[${PURPLE}\$? ${YELLOW}\t${BLUE} \u@\h${DEFAULT_TERM_COLOR}${RED}-docker${DEFAULT_TERM_COLOR} ${PURPLE}\$(__git_ps1 ) ${RED}\w${BLUE}]${DEFAULT_TERM_COLOR}\n\$ "
     else
         PS1="${BLUE}[${PURPLE}\$? ${YELLOW}\t${BLUE} \u@\h${DEFAULT_TERM_COLOR} ${PURPLE}\$(__git_ps1 ) ${RED}\w${BLUE}]${DEFAULT_TERM_COLOR}\n\$ "
