@@ -105,5 +105,11 @@ esac
 # Source the aliases file
 [ ${HOME}/.aliases ] && . ${HOME}/.aliases
 
-# Source the git completion file
-[ ${HOME}/.git-completion.bash ] && . ${HOME}/.git-completion.bash
+# git completion file.
+if [ -f /usr/local/etc/bash_completion ]
+then
+    source /usr/local/etc/bash_completion
+elif [ -f ${HOME}/.git-completion.bash ]
+then
+    source ${HOME}/.git-completion.bash
+fi
