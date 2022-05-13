@@ -100,11 +100,11 @@ RUN yum install -y the_silver_searcher tmux man-pages cmake
 # easier if fuse worked better in a docker build, but there doesn't seem to be
 # an easy way to grant privileged access to a docker build run. So we have to
 # do things by hand.
-RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage; \
-    chmod u+x nvim.appimage; \
-    ./nvim.appimage --appimage-extract; \
-    cd squashfs-root/usr; \
-    tar cf - . | tar xf - -C /usr
+RUN git clone https://github.com/neovim/neovim; \
+    cd neovim; \
+    git checkout v0.7.0; \
+    make -j `nproc`; \
+    make install
 
 # Install Bear. This takes a while, but I had trouble using an rpm.
 RUN yum install -y json-devel spdlog-devel fmt-devel
