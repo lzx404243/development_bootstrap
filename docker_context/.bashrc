@@ -47,8 +47,28 @@ if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# For git-informed prompts:
-[ ${HOME}/.git-prompt.sh ] && . ${HOME}/.git-prompt.sh
+# git completion file.
+if [ -f /usr/local/etc/bash_completion ]
+then
+    source /usr/local/etc/bash_completion
+elif [ -f ${HOME}/.git-completion.bash ]
+then
+    source ${HOME}/.git-completion.bash
+fi
+
+# Similarly, make sure the git-prompt is sourced as well.
+if [ ! -f /usr/local/etc/bash_completion ]
+then
+    [ -f ${HOME}/.git-prompt.sh ] && source ${HOME}/.git-prompt.sh
+fi
+
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWDIRTYSTATE=true
+export GIT_PS1_SHOWSTASHSTATE=true
+export GIT_PS1_SHOWUNTRACKEDFILES=true
+export GIT_PS1_SHOWUPSTREAM="verbose"
+export GIT_PS1_HIDE_IF_PWD_IGNORED=true
+export GIT_PS1_SHOWCOLORHINTS=true
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
@@ -103,13 +123,7 @@ xterm*|rxvt*)
 esac
 
 # Source the aliases file
-[ ${HOME}/.aliases ] && . ${HOME}/.aliases
+[ -f ${HOME}/.aliases ] && source ${HOME}/.aliases
 
-# git completion file.
-if [ -f /usr/local/etc/bash_completion ]
-then
-    source /usr/local/etc/bash_completion
-elif [ -f ${HOME}/.git-completion.bash ]
-then
-    source ${HOME}/.git-completion.bash
-fi
+# tmux bash completion.
+[ -f ${HOME}/.tmux-completion.bash ] && source ${HOME}/.tmux-completion.bash

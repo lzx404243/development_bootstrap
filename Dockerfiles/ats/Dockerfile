@@ -77,6 +77,7 @@ COPY \
     .inputrc \
     .pylintrc \
     .tmux.conf \
+    .tmux-completion.bash \
     .vimrc \
     /home/$username/
 
@@ -104,6 +105,7 @@ RUN \
         .inputrc \
         .pylintrc \
         .tmux.conf \
+        .tmux-completion.bash \
         .vim \
         .vimrc
 
