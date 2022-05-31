@@ -13,6 +13,7 @@
 [alias]
     d = difftool -d
     lg = log --decorate --graph
+    tg = log --decorate --graph --oneline
     shw = show --decorate -s
     ctags = !.git/hooks/ctags
     cln = clean -d -x -f -f -q
