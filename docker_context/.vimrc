@@ -18,6 +18,9 @@ autocmd Filetype c,cpp set comments^=:///
 
 call plug#begin('~/.vim/plugged')
 
+" For handling large files.
+Plug 'vim-scripts/LargeFile'
+
 " For better file browsing.
 Plug 'preservim/nerdtree'
 
@@ -48,6 +51,9 @@ Plug 'vim-airline/vim-airline-themes'
 
 " Automatic completion.
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" GitHub Copilot.
+Plug 'github/copilot.vim'
 
 " --------------
 " Python Plugins
@@ -83,6 +89,13 @@ call plug#end()
 
 filetype plugin indent on   " enables filetype indent specific plugins
 
+" ---------
+" LargeFile
+" ---------
+
+" Set the size, in MB, when LargeFile settings should kick in.
+let g:LargeFile = 100
+
 " -------
 " vimdiff
 " -------
@@ -101,7 +114,7 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
 " Close the tab if NERDTree is the only window remaining in it.
 autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
-let NERDTreeIgnore=['\.o$', '\.lo$', '\.so$', '\.pyc$', '__pycache__', '\~$']
+let NERDTreeIgnore=['\.plist$','\.o$', '\.lo$', '\.so$', '\.pyc$', '__pycache__', '\~$']
 
 " -------------
 " python-syntax
@@ -326,6 +339,12 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 " To change the error coc popups to be readable.
 highlight CocFloating ctermfg=Black ctermbg=DarkYellow
 highlight CocErrorFloat ctermfg=Black ctermbg=DarkYellow
+
+"-------------------
+" github/copilot.vim
+"-------------------
+" Uncomment to point to a specific version of node.
+"let g:copilot_node_command = "/opt/homebrew/opt/node@16/bin/node"
 
 "------------------------------------------------------------------------------
 " End Plugin Configuration
