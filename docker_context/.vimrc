@@ -346,6 +346,9 @@ highlight CocErrorFloat ctermfg=Black ctermbg=DarkYellow
 " Uncomment to point to a specific version of node.
 "let g:copilot_node_command = "/opt/homebrew/opt/node@16/bin/node"
 
+inoremap <C-n> <Plug>(copilot-next)
+inoremap <C-p> <Plug>(copilot-previous)
+
 "------------------------------------------------------------------------------
 " End Plugin Configuration
 "------------------------------------------------------------------------------
