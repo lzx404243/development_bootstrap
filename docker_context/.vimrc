@@ -100,6 +100,9 @@ let g:LargeFile = 100
 " vimdiff
 " -------
 set diffopt+=iwhite
+if &diff
+  colorscheme slate
+endif
 
 " --------
 " nerdtree
