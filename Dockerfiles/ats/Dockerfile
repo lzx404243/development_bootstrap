@@ -56,6 +56,7 @@ COPY \
     /build_ats_coverage \
     /build_ats_not_quic \
     /build_ats_with_clang \
+    /cos \
     /start_ats_project \
     /pretty_print_json \
     /home/$username/bin/
