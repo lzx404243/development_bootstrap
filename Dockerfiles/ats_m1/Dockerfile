@@ -250,3 +250,11 @@ RUN \
   make install; \
   echo /usr/local/bin/fish | sudo tee -a /etc/shells; \
   chsh -s /usr/local/bin/fish
+
+# Install fzf
+RUN \
+  mkdir -p /home/${username}/src; \
+  cd /home/${username}/src; \
+  git clone https://github.com/junegunn/fzf.git; \
+  cd fzf; \
+  ./install --no-key-bindings --no-completion --no-update-rc
