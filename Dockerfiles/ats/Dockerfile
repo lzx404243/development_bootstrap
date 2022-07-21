@@ -147,21 +147,21 @@ RUN \
   sudo make install install-doc install-html; \
   cp contrib/completion/git-completion.bash /home/${username}/.git-completion.bash
 
-## Use a recent fish.
-#RUN \
-#  mkdir -p /home/${username}/src; \
-#  cd /home/${username}/src; \
-#  git clone https://github.com/fish-shell/fish-shell.git; \
-#  git checkout 3.5.1; \
-#  cd fish-shell; \
-#  mkdir build; \
-#  cd build; \
-#  cmake ..; \
-#  make -j`nprod`; \
-#  sudo make install; \
-#  cd /home/${username}/src; \
-#  git clone https://github.com/edc/bass.git; \
-#  cd bass; \
-#  make install; \
-#  echo /usr/local/bin/fish | sudo tee -a /etc/shells; \
-#  chsh -s /usr/local/bin/fish
+# Use a recent fish.
+RUN \
+  mkdir -p /home/${username}/src; \
+  cd /home/${username}/src; \
+  git clone https://github.com/fish-shell/fish-shell.git; \
+  git checkout 3.5.1; \
+  cd fish-shell; \
+  mkdir build; \
+  cd build; \
+  cmake ..; \
+  make -j`nprod`; \
+  sudo make install; \
+  cd /home/${username}/src; \
+  git clone https://github.com/edc/bass.git; \
+  cd bass; \
+  make install; \
+  echo /usr/local/bin/fish | sudo tee -a /etc/shells; \
+  chsh -s /usr/local/bin/fish
