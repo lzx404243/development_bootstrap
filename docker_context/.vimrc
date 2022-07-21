@@ -18,6 +18,9 @@ autocmd Filetype c,cpp set comments^=:///
 
 call plug#begin('~/.vim/plugged')
 
+" Highlighting for fish scripts.
+Plug 'dag/vim-fish'
+
 " For handling large files.
 Plug 'vim-scripts/LargeFile'
 
