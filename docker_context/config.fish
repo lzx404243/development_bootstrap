@@ -35,9 +35,11 @@ end
 function fish_prompt --description 'Write out the prompt'
     set -l last_status $status
     set -l normal (set_color normal)
-    set -l status_color (set_color brgreen)
-    set -l cwd_color (set_color $fish_color_cwd)
-    set -l vcs_color (set_color brpurple)
+    set -l status_color (set_color green)
+    set -l login_color (set_color cyan)
+    set -l time_color (set_color yellow)
+    set -l cwd_color (set_color cyan)
+    set -l vcs_color (set_color purple)
     set -l prompt_status ""
     set -g __fish_git_prompt_show_informative_status 1
 
@@ -60,6 +62,6 @@ function fish_prompt --description 'Write out the prompt'
         set prompt_status $status_color "[" $last_status "]" $normal
     end
 
-    echo -s (prompt_login) ' ' $cwd_color (prompt_pwd) $vcs_color (fish_git_prompt) $normal ' ' $prompt_status
+    echo -s $time_color (date +%H:%M:%S) ' ' $login_color (prompt_login) ' ' $cwd_color (prompt_pwd) $vcs_color (fish_git_prompt) $normal ' ' $prompt_status
     echo -n -s $status_color $suffix ' ' $normal
 end

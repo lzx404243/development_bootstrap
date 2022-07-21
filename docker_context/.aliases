@@ -1,12 +1,12 @@
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    eval "`dircolors -b`"
-    alias ls='ls --color=auto'
-else
-    # We're probably on a Mac.
-    export CLICOLOR=YES
-    export LSCOLORS="Gxfxcxdxbxegedabagacad"
-fi
+## enable color support of ls and also add handy aliases
+#if [ -x /usr/bin/dircolors ]; then
+#    eval "`dircolors -b`"
+#    alias ls='ls --color=auto'
+#else
+#    # We're probably on a Mac.
+#    export CLICOLOR=YES
+#    export LSCOLORS="Gxfxcxdxbxegedabagacad"
+#fi
 
 # some more ls aliases
 alias sl='ls'
@@ -25,13 +25,11 @@ alias tmux='tmux -2'
 alias gentags='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q+f'
 alias genptags='ctags -R --python-kinds=-i'
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-fi
-
 alias sbrc='source $HOME/.bashrc'
+alias sfrc='source $HOME/.config/fish/config.fish'
 alias ptree='ps -aef --forest'
-alias sdev='source /opt/rh/gcc-toolset-9/enable'
+
+alias urldecode='python3 -c "import sys, urllib.parse as ul; \
+    print(ul.unquote_plus(sys.argv[1]))"'
+alias urlencode='python3 -c "import sys, urllib.parse as ul; \
+    print (ul.quote_plus(sys.argv[1]))"'
