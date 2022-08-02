@@ -5,9 +5,14 @@ set softtabstop=2
 set autoindent
 set expandtab
 
-" Where to store swap files.  By default, they will go into ~/.vim/swap, but
-" if that doesn't work, they will go in cwd.
-set directory=~/.vim/swap,.
+" Changing the swap directory for the MANPAGER causes a "E302: Could not
+" rename swap file" error. Therefore do not change the swap directory for
+" man pages.
+if stridx(@%, 'man://') >= 0
+  " Where to store swap files.  By default, they will go into ~/.vim/swap, but
+  " if that doesn't work, they will go in cwd.
+  set directory=~/.vim/swap,.
+endif
 
 " Make vim auto-wrap tripple slash comments.
 autocmd Filetype c,cpp set comments^=:///

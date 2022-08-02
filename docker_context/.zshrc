@@ -4,6 +4,7 @@ for _path in \
     $HOME/bin \
     $HOME/ssh_bin \
     $HOME/local/bin \
+    ${HOME}/src/fzf/bin \
     /Applications/Postgres.app/Contents/Versions/latest/bin \
     /usr/local/opt/python@3.10/bin \
     /usr/local/opt/node@16/bin
@@ -11,9 +12,10 @@ do
     export PATH="$_path:$PATH"
 done
 
+export FZF_BASE=${HOME}/src/fzf
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -91,7 +93,7 @@ zstyle ':omz:update' frequency 13
 # zsh-vi-mode has an annoying issue where it clobbers other plugins before it
 # (so keep it early in the list if you include it) and also makes prompts act
 # remove the previous lines when switching between insert and command mode.
-plugins=(fzf git tmux tmuxinator docker)
+plugins=(fzf git tmux tmuxinator docker zsh-autosuggestions zsh-history-substring-search zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -107,22 +109,3 @@ EDITOR=nvim
 
 set -o vi
 bindkey -M viins '\e_' insert-last-word
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
