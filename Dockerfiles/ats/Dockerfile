@@ -147,25 +147,6 @@ RUN \
   sudo make install install-doc install-html; \
   cp contrib/completion/git-completion.bash /home/${username}/.git-completion.bash
 
-# Use a recent fish.
-RUN \
-  mkdir -p /home/${username}/src; \
-  cd /home/${username}/src; \
-  git clone https://github.com/fish-shell/fish-shell.git; \
-  git checkout 3.5.1; \
-  cd fish-shell; \
-  mkdir build; \
-  cd build; \
-  cmake ..; \
-  make -j`nprod`; \
-  sudo make install; \
-  cd /home/${username}/src; \
-  git clone https://github.com/edc/bass.git; \
-  cd bass; \
-  make install; \
-  echo /usr/local/bin/fish | sudo tee -a /etc/shells; \
-  chsh -s /usr/local/bin/fish
-
 # Install fzf
 RUN \
   mkdir -p /home/${username}/src; \
@@ -173,3 +154,22 @@ RUN \
   git clone https://github.com/junegunn/fzf.git; \
   cd fzf; \
   ./install --no-key-bindings --no-completion --no-update-rc
+
+# Use a recent fish and oh-my-zsh.
+RUN sudo yum install -y zsh util-linux-user
+RUN sh -c "`wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -`"
+RUN \
+   git clone https://github.com/zsh-users/zsh-autosuggestions /home/${username}/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
+   git clone https://github.com/zsh-users/zsh-history-substring-search /home/${username}/.oh-my-zsh/custom/plugins/zsh-history-substring-search; \
+   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/${username}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+COPY .zshrc /home/$username/
+COPY aliases.zsh /home/$username/.oh-my-zsh/custom/aliases.zsh
+COPY bneradt.zsh-theme /home/$username/.oh-my-zsh/custom/themes/bneradt.zsh-theme
+RUN \
+    sudo chown -R $username:nobody \
+        .zshrc \
+        .oh-my-zsh/
+
+RUN echo "source /opt/rh/gcc-toolset-11/enable" >> /home/$username/.zshrc
+RUN sudo chsh -s /usr/bin/zsh bneradt
