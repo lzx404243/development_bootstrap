@@ -73,7 +73,7 @@ zstyle ':omz:update' frequency 13
 # "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="yyyy-mm-dd"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -87,9 +87,6 @@ zstyle ':omz:update' frequency 13
 # For zsh-vi-mode:
 # git clone https://github.com/jeffreytse/zsh-vi-mode $ZSH_CUSTOM/plugins/zsh-vi-mode
 # The following is so that zsh-vi-mode does not clobber fzf.
-
-# fzf: Use ctrl+r to open fzf history search prompt.
-
 # zsh-vi-mode has an annoying issue where it clobbers other plugins before it
 # (so keep it early in the list if you include it) and also makes prompts act
 # remove the previous lines when switching between insert and command mode.
@@ -106,6 +103,17 @@ source $ZSH/oh-my-zsh.sh
 
 GDBHISTFILE=${HOME}/.gdbhistory
 EDITOR=nvim
+export MANPAGER='nvim +Man!'
+export MANWIDTH=999
 
+# vi mode bindings.
 set -o vi
+# Retrieve the last word of the last command via Escape+_
 bindkey -M viins '\e_' insert-last-word
+# Use vim to edit the command line via Escape+v
+autoload edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
+
+# Doesn't seem super helpful.
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
