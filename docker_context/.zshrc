@@ -110,6 +110,8 @@ export MANWIDTH=999
 set -o vi
 # Retrieve the last word of the last command via Escape+_
 bindkey -M viins '\e_' insert-last-word
+# Bind command-mode '/' to fzf history search.
+bindkey -M vicmd '/'  fzf-history-widget
 # Use vim to edit the command line via Escape+v
 autoload edit-command-line
 zle -N edit-command-line
