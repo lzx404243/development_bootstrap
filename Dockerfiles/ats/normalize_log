@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import argparse
 import re
@@ -9,15 +9,15 @@ class BaseNormalizer:
         raise NotImplementedError("A base class should have implemented this.")
 
 class LineNumberNormalizer(BaseNormalizer):
-    compiled = re.compile(r'<(.+):(\d+) \(.+\)>')
+    compiled = re.compile(r'<(\S+):(\d+) \((\S+)\)>')
 
     def normalize(self, line):
         """
         >>> n = LineNumberNormalizer()
         >>> n.normalize('[Dec  6 16:32:37.775] [ET_NET 3] DEBUG: <HttpSessionAccept.cc:49 (accept)> (http_seq) [HttpSessionAccept:mainEvent 0x7fedf803ebf0] accepted connection from 127.0.0.1:52672 transport type = 1')
-        '[Dec  6 16:32:37.775] [ET_NET 3] DEBUG: <HttpSessionAccept.cc:NN (accept)> (http_seq) [HttpSessionAccept:mainEvent 0x7fedf803ebf0] accepted connection from 127.0.0.1:52672 transport type = 1'
+        '[Dec  6 16:32:37.775] [ET_NET 3] DEBUG: <HttpSessionAccept.cc:NNN (accept)> (http_seq) [HttpSessionAccept:mainEvent 0x7fedf803ebf0] accepted connection from 127.0.0.1:52672 transport type = 1'
         """
-        return self.compiled.sub(r'<\1:NNN (\2)>', line)
+        return self.compiled.sub(r'<\1:NNN (\3)>', line)
 
 class PortNormalizer(BaseNormalizer):
     compiled = re.compile(r'\s(\d+\.\d+\.\d+\.\d+):\d+\s')
