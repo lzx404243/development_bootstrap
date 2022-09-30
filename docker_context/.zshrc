@@ -119,4 +119,4 @@ zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
 
 # Doesn't seem super helpful.
-#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
