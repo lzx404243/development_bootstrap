@@ -50,6 +50,7 @@ WORKDIR /home/$username
 RUN mkdir -p bin
 
 COPY \
+    /bisect_with_autest \
     /build_ats \
     /clean_build_test \
     /build_ats_core \
