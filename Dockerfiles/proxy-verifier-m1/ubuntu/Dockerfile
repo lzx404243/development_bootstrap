@@ -132,3 +132,29 @@ RUN nvim +'CocInstall -sync coc-clangd coc-pyright coc-json coc-sh' +qall
 RUN  \
   git config --global user.name "$git_username"; \
   git config --global user.email $git_email
+
+# Install fzf
+RUN \
+  mkdir -p /home/${username}/src; \
+  cd /home/${username}/src; \
+  git clone https://github.com/junegunn/fzf.git; \
+  cd fzf; \
+  ./install --no-key-bindings --no-completion --no-update-rc
+
+# Install zsh
+RUN sudo apt install -y zsh
+RUN sh -c "`wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -`"
+RUN \
+   git clone https://github.com/zsh-users/zsh-autosuggestions /home/${username}/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
+   git clone https://github.com/zsh-users/zsh-history-substring-search /home/${username}/.oh-my-zsh/custom/plugins/zsh-history-substring-search; \
+   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/${username}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+COPY .zshrc /home/$username/
+COPY aliases.zsh /home/$username/.oh-my-zsh/custom/aliases.zsh
+COPY bneradt.zsh-theme /home/$username/.oh-my-zsh/custom/themes/bneradt.zsh-theme
+RUN \
+    sudo chown -R $username:nogroup \
+        .zshrc \
+        .oh-my-zsh/
+
+RUN sudo chsh -s /usr/bin/zsh bneradt

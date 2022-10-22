@@ -129,4 +129,4 @@ esac
 [ -f ${HOME}/.tmux-completion.bash ] && source ${HOME}/.tmux-completion.bash
 
 # Django bash completion.
-[ ${HOME}/.django-completion.bash ] && . ${HOME}/.django-completion.bash
+[ -f ${HOME}/.django-completion.bash ] && . ${HOME}/.django-completion.bash
