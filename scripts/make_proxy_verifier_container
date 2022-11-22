@@ -35,7 +35,7 @@ sudo docker exec -u $(whoami) ${container_name} /home/$(whoami)/bin/start_proxy_
 
 echo
 echo "Enter the container with:"
-echo "sudo docker exec -it -u $(whoami) ${container_name} /bin/bash"
+echo "sudo docker exec -it -u $(whoami) ${container_name} /bin/zsh"
 echo
 echo "Enter the tmux session with:"
 echo "tmux attach -t ${branch_name}"

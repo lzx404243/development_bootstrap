@@ -158,3 +158,12 @@ RUN \
         .oh-my-zsh/
 
 RUN sudo chsh -s /usr/bin/zsh bneradt
+
+RUN \
+    sudo apt-get -y install locales && \
+    sudo sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+    sudo locale-gen && \
+    sudo update-locale LANG=en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
