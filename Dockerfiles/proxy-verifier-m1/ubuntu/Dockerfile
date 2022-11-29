@@ -159,6 +159,7 @@ RUN \
 
 RUN sudo chsh -s /usr/bin/zsh bneradt
 
+# Get terminal fonts for the zsh prompt working.
 RUN \
     sudo apt-get -y install locales && \
     sudo sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
@@ -168,4 +169,12 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
+# Update pipenv for when we run pipenv install on recent versions of Python3.
 RUN python3 -m pip install --upgrade pip pipenv
+
+# Install the required node 17 for Copilot, which does not support 18 and above yet.
+# https://github.com/community/community/discussions/16298
+SHELL ["/bin/bash", "--login", "-i", "-c"]
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+RUN . /home/${username}/.nvm/nvm.sh && nvm install 17 && nvm use 17
+SHELL ["/bin/bash", "--login", "-c"]
