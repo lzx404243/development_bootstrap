@@ -90,6 +90,44 @@ RUN yum install -y ctags elfutils-libelf-devel wdiff
 COPY /install_abi_tools.sh /root/install_abi_tools.sh
 RUN bash /root/install_abi_tools.sh
 
+#-----------------------------
+# Install quiche dependencies.
+#-----------------------------
+
+RUN yum install -y cmake
+
+# Retrieve quiche
+RUN \
+  mkdir -p src && \
+  cd src && \
+  git clone --recursive https://github.com/cloudflare/quiche
+
+# Install rust/cargo.
+RUN \
+  mkdir -p src && \
+  wget https://sh.rustup.rs -O src/rustup.sh && \
+  bash src/rustup.sh -y
+
+# Build quiche.
+RUN \
+  source "/root/.cargo/env" && \
+  cd src/quiche && \
+  cargo build -j4 --package quiche --release --features ffi,pkg-config-meta,qlog
+
+# Manually install quiche because, unfortunately, the cargo install command
+# doesn't work for quiche.
+RUN \
+  mkdir -p /opt/quiche/lib/pkgconfig && \
+  mkdir -p /opt/quiche/include && \
+  cp src/quiche/target/release/libquiche.a /opt/quiche/lib && \
+  cp src/quiche/target/release/libquiche.so /opt/quiche/lib && \
+  cp src/quiche/quiche/include/quiche.h /opt/quiche/include && \
+  cp src/quiche/target/release/quiche.pc /opt/quiche/lib/pkgconfig
+
+# Install go-httpbin
+RUN go install github.com/mccutchen/go-httpbin/v2/cmd/go-httpbin@v2.5.6
+RUN cp --force go/bin/go-httpbin /usr/local/bin/go-httpbin
+
 # My customization.
 RUN yum install -y glibc-locale-source glibc-langpack-en
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
