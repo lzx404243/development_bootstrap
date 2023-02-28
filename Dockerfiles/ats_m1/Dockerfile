@@ -297,7 +297,6 @@ RUN echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee -a /etc/profile.d/go.s
 RUN echo 'export GOBIN=/usr/local/go/bin' | sudo tee -a /etc/profile.d/go.sh
 RUN wget https://go.dev/dl/go1.20.1.linux-arm64.tar.gz
 RUN sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xf go1.20.1.linux-arm64.tar.gz
-RUN ls -la /usr/local/go/bin/go
 
 RUN \
   /usr/local/go/bin/go install github.com/summerwind/h2spec/cmd/h2spec@latest; \
