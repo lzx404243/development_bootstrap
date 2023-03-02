@@ -263,14 +263,6 @@ RUN \
   sudo make install install-doc install-html; \
   cp contrib/completion/git-completion.bash /home/${username}/.git-completion.bash
 
-# Install fzf
-RUN \
-  mkdir -p /home/${username}/src; \
-  cd /home/${username}/src; \
-  git clone https://github.com/junegunn/fzf.git; \
-  cd fzf; \
-  ./install --no-key-bindings --no-completion --no-update-rc
-
 # Use a recent fish and oh-my-zsh.
 RUN sudo yum install -y zsh util-linux-user
 RUN sh -c "`wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -`"
@@ -289,6 +281,15 @@ RUN \
 
 RUN echo "source /opt/rh/gcc-toolset-11/enable" >> /home/$username/.zshrc
 RUN sudo chsh -s /usr/bin/zsh bneradt
+
+# Install fzf
+RUN \
+  mkdir -p /home/${username}/src; \
+  cd /home/${username}/src; \
+  git clone https://github.com/junegunn/fzf.git; \
+  cd fzf; \
+  ./install --all
+
 
 # Install a recent go and some go applications.
 WORKDIR /home/$username/src

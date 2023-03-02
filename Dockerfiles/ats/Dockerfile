@@ -149,14 +149,6 @@ RUN \
   sudo make install install-doc install-html; \
   cp contrib/completion/git-completion.bash /home/${username}/.git-completion.bash
 
-# Install fzf
-RUN \
-  mkdir -p /home/${username}/src; \
-  cd /home/${username}/src; \
-  git clone https://github.com/junegunn/fzf.git; \
-  cd fzf; \
-  ./install --no-key-bindings --no-completion --no-update-rc
-
 # Use a recent fish and oh-my-zsh.
 RUN sudo yum install -y zsh util-linux-user
 RUN sh -c "`wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -`"
@@ -175,3 +167,30 @@ RUN \
 
 RUN echo "source /opt/rh/gcc-toolset-11/enable" >> /home/$username/.zshrc
 RUN sudo chsh -s /usr/bin/zsh bneradt
+
+# Install fzf
+RUN \
+  mkdir -p /home/${username}/src; \
+  cd /home/${username}/src; \
+  git clone https://github.com/junegunn/fzf.git; \
+  cd fzf; \
+  ./install --all
+
+
+# Install a recent go and some go applications.
+WORKDIR /home/$username/src
+RUN sudo yum remove -y golang
+RUN echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee -a /etc/profile.d/go.sh
+RUN echo 'export GOBIN=/usr/local/go/bin' | sudo tee -a /etc/profile.d/go.sh
+RUN wget https://go.dev/dl/go1.20.1.linux-amd64.tar.gz
+RUN sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xf go1.20.1.linux-amd64.tar.gz
+
+RUN \
+  /usr/local/go/bin/go install github.com/summerwind/h2spec/cmd/h2spec@latest; \
+  sudo cp /home/$username/go/bin/h2spec /usr/local/go/bin/
+
+RUN \
+  /usr/local/go/bin/go install github.com/mccutchen/go-httpbin/v2/cmd/go-httpbin@v2.5.6; \
+  sudo cp /home/$username/go/bin/go-httpbin /usr/local/go/bin/
+
+WORKDIR /home/$username
