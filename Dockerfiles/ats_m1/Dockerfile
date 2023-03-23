@@ -118,7 +118,39 @@ RUN \
   cp src/quiche/quiche/include/quiche.h /opt/quiche/include && \
   cp src/quiche/target/release/quiche.pc /opt/quiche/lib/pkgconfig
 
+# Install go and some of our needed go applications.
+WORKDIR /root
+RUN yum remove -y golang
+RUN echo 'export PATH=$PATH:/usr/local/go/bin' | tee -a /etc/profile.d/go.sh
+RUN echo 'export GOBIN=/usr/local/go/bin' | tee -a /etc/profile.d/go.sh
+RUN wget https://go.dev/dl/go1.20.1.linux-arm64.tar.gz
+RUN rm -rf /usr/local/go && sudo tar -C /usr/local -xf go1.20.1.linux-arm64.tar.gz
+
+RUN \
+  /usr/local/go/bin/go install github.com/summerwind/h2spec/cmd/h2spec@latest; \
+  cp /root/go/bin/h2spec /usr/local/go/bin/
+
+RUN \
+  /usr/local/go/bin/go install github.com/mccutchen/go-httpbin/v2/cmd/go-httpbin@v2.5.6; \
+  cp /root/go/bin/go-httpbin /usr/local/go/bin/
+
+# BoringSSL has no releases or tags. For Docker image reproducibilty, we pin to
+# a particular commit. This should be updated regularly.
+RUN \
+  cd /root/src; \
+  git clone https://github.com/google/boringssl.git; \
+  cd boringssl/; \
+  git checkout b6a50fd62d1ae44ad211ebe26f803c66db444302; \
+  mkdir build; \
+  cd build; \
+  source /opt/rh/gcc-toolset-11/enable; \
+  cmake -DGO_EXECUTABLE=/usr/local/go/bin/go -DCMAKE_INSTALL_PREFIX=/opt/boringssl -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 ../; \
+  make -j4; \
+  make install
+
+#------------------
 # My customization.
+#------------------
 RUN yum install -y glibc-locale-source glibc-langpack-en
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 
@@ -289,22 +321,5 @@ RUN \
   git clone https://github.com/junegunn/fzf.git; \
   cd fzf; \
   ./install --all
-
-
-# Install a recent go and some go applications.
-WORKDIR /home/$username/src
-RUN sudo yum remove -y golang
-RUN echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee -a /etc/profile.d/go.sh
-RUN echo 'export GOBIN=/usr/local/go/bin' | sudo tee -a /etc/profile.d/go.sh
-RUN wget https://go.dev/dl/go1.20.1.linux-arm64.tar.gz
-RUN sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xf go1.20.1.linux-arm64.tar.gz
-
-RUN \
-  /usr/local/go/bin/go install github.com/summerwind/h2spec/cmd/h2spec@latest; \
-  sudo cp /home/$username/go/bin/h2spec /usr/local/go/bin/
-
-RUN \
-  /usr/local/go/bin/go install github.com/mccutchen/go-httpbin/v2/cmd/go-httpbin@v2.5.6; \
-  sudo cp /home/$username/go/bin/go-httpbin /usr/local/go/bin/
 
 WORKDIR /home/$username

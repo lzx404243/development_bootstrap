@@ -133,14 +133,6 @@ RUN  \
   git config --global user.name "$git_username"; \
   git config --global user.email $git_email
 
-# Install fzf
-RUN \
-  mkdir -p /home/${username}/src; \
-  cd /home/${username}/src; \
-  git clone https://github.com/junegunn/fzf.git; \
-  cd fzf; \
-  ./install --no-key-bindings --no-completion --no-update-rc
-
 # Install zsh
 RUN sudo apt install -y zsh
 RUN sh -c "`wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -`"
@@ -158,6 +150,14 @@ RUN \
         .oh-my-zsh/
 
 RUN sudo chsh -s /usr/bin/zsh bneradt
+
+# Install fzf
+RUN \
+  mkdir -p /home/${username}/src; \
+  cd /home/${username}/src; \
+  git clone https://github.com/junegunn/fzf.git; \
+  cd fzf; \
+  ./install
 
 # Get terminal fonts for the zsh prompt working.
 RUN \
