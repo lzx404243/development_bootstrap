@@ -176,21 +176,7 @@ RUN \
   cd fzf; \
   ./install --all
 
-
-# Install a recent go and some go applications.
-WORKDIR /home/$username/src
-RUN sudo yum remove -y golang
-RUN echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee -a /etc/profile.d/go.sh
-RUN echo 'export GOBIN=/usr/local/go/bin' | sudo tee -a /etc/profile.d/go.sh
-RUN wget https://go.dev/dl/go1.20.1.linux-amd64.tar.gz
-RUN sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xf go1.20.1.linux-amd64.tar.gz
-
-RUN \
-  /usr/local/go/bin/go install github.com/summerwind/h2spec/cmd/h2spec@latest; \
-  sudo cp /home/$username/go/bin/h2spec /usr/local/go/bin/
-
-RUN \
-  /usr/local/go/bin/go install github.com/mccutchen/go-httpbin/v2/cmd/go-httpbin@v2.5.6; \
-  sudo cp /home/$username/go/bin/go-httpbin /usr/local/go/bin/
-
 WORKDIR /home/$username
+
+# Keep this at the end to clean up the yum cache.
+RUN sudo yum clean all
