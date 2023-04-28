@@ -1,0 +1,2 @@
+export VSCODE_IPC_HOOK_CLI="$( \ls 2>/dev/null -1 -t /tmp/vscode-ipc-*.sock | head -n 1 )"  # needed to be able to open files in VS Code's editor from the command line
+export SSH_AUTH_SOCK="$( \ls 2>/dev/null -1 -t /tmp/vscode-ssh-auth-*.sock | head -n 1 )"
